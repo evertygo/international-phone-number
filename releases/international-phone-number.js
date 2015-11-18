@@ -12,6 +12,7 @@
     numberType: "MOBILE",
     onlyCountries: void 0,
     preferredCountries: ['us', 'gb'],
+    skipUtilScriptDownload: false,
     utilsScript: ""
   }).directive('internationalPhoneNumber', [
     '$timeout', 'ipnConfig', function($timeout, ipnConfig) {
@@ -32,7 +33,7 @@
             }
           }
           read = function() {
-            return ctrl.$setViewValue(element.val());
+            return ctrl.$setViewValue(element.intlTelInput('getNumber'));
           };
           handleWhatsSupposedToBeAnArray = function(value) {
             if (value instanceof Array) {
@@ -67,7 +68,7 @@
                 element.val(newValue);
               }
               element.intlTelInput(options);
-              if (!(attrs.skipUtilScriptDownload !== void 0 || options.utilsScript)) {
+              if (!(options.skipUtilScriptDownload || attrs.skipUtilScriptDownload !== void 0 || options.utilsScript)) {
                 element.intlTelInput('loadUtils', '/bower_components/intl-tel-input/lib/libphonenumber/build/utils.js');
               }
               return watchOnce();
