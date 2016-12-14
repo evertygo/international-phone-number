@@ -26,6 +26,7 @@ angular.module("internationalPhoneNumber", [])
   require: '^ngModel'
   scope:
     ngModel: '='
+    country: '='
 
   link: (scope, element, attrs, ctrl) ->
 
@@ -70,7 +71,7 @@ angular.module("internationalPhoneNumber", [])
           if newValue[0] != '+'
             newValue = '+' + newValue
 
-          element.val newValue
+          ctrl.$modelValue = newValue
 
         element.intlTelInput(options)
 
@@ -81,6 +82,10 @@ angular.module("internationalPhoneNumber", [])
 
     )
 
+    scope.$watch('country', (newValue) ->
+        if newValue != null && newValue != undefined && newValue != ''
+            element.intlTelInput("selectCountry", newValue)
+    )
 
     ctrl.$formatters.push (value) ->
       if !value

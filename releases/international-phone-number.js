@@ -20,7 +20,8 @@
         restrict: 'A',
         require: '^ngModel',
         scope: {
-          ngModel: '='
+          ngModel: '=',
+          country: '='
         },
         link: function(scope, element, attrs, ctrl) {
           var handleWhatsSupposedToBeAnArray, options, read, watchOnce;
@@ -65,7 +66,7 @@
                 if (newValue[0] !== '+') {
                   newValue = '+' + newValue;
                 }
-                element.val(newValue);
+                ctrl.$modelValue = newValue;
               }
               element.intlTelInput(options);
               if (!(options.skipUtilScriptDownload || attrs.skipUtilScriptDownload !== void 0 || options.utilsScript)) {
@@ -73,6 +74,11 @@
               }
               return watchOnce();
             });
+          });
+          scope.$watch('country', function(newValue) {
+            if (newValue !== null && newValue !== void 0 && newValue !== '') {
+              return element.intlTelInput("selectCountry", newValue);
+            }
           });
           ctrl.$formatters.push(function(value) {
             if (!value) {
